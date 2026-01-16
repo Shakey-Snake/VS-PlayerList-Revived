@@ -12,14 +12,15 @@ public class PlayerData {
 
     private readonly int _hash;
 
-    public PlayerData(PlayerList mod, IPlayer player) {
+    public PlayerData(PlayerList mod, IPlayer? player) {
         int max = mod.Config.MaxNameLength ?? 20;
-        string name = player.PlayerName;
-
+    
+        string name = player?.PlayerName ?? "Unknown";
         Name = name.Length <= max ? name : $"{name[..max]}\u2026";
-        Ping = (int)(player.Ping() * 1000);
-        Font = player.EntitlementColoredFont();
-
+    
+        Ping = (int)((player?.Ping() ?? -1) * 1000);
+        Font = player?.EntitlementColoredFont() ?? Util.DefaultFont;
+    
         _hash = HashCode.Combine(Name, Ping);
     }
 
